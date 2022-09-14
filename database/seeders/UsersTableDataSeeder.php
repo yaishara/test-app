@@ -15,7 +15,7 @@ class UsersTableDataSeeder extends Seeder
      */
     public function run()
     {
-        User::updateOrCreate(
+        $user1= User::updateOrCreate(
             [
                 'email'   => 'admin@wearedesigners.net',
             ],[
@@ -23,5 +23,9 @@ class UsersTableDataSeeder extends Seeder
             'email' => 'admin@wearedesigners.net',
             'password' => Hash::make('654321'),
         ]);
+
+        if ($user1->wasRecentlyCreated) {
+            $user1->assignRole('Administrator');
+        }
     }
 }
