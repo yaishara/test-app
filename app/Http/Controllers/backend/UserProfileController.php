@@ -16,6 +16,7 @@ class UserProfileController extends Controller
 
         $this->middleware('permission:userProfile-edit', ['only' => ['edit', 'update']]);
     }
+
     /**
      * Display a listing of the resource.
      *
@@ -39,7 +40,7 @@ class UserProfileController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -50,7 +51,7 @@ class UserProfileController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
@@ -61,42 +62,53 @@ class UserProfileController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
     {
         $user = $this->userProfileRepository->userByTd($id);
-        return view('backend.user-profile.view',compact('user'));
+        return view('backend.user-profile.view', compact('user'));
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param \Illuminate\Http\Request $request
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
     {
         try {
-            $user = $this->userProfileRepository->updateUser($request,$id);
+            $user = $this->userProfileRepository->updateUser($request, $id);
             $message = ['success' => 'updated Successfully'];
         } catch (\Exception $exception) {
             $message = ['error' => 'Pls try again..!'];
         }
 
-        return redirect(route('profile.edit',$id))->with($message);
+        return redirect(route('profile.edit', $id))->with($message);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
     {
         //
+    }
+
+    public function change_password(Request $request, $id){
+        try {
+            $user = $this->userProfileRepository->updatePassword($request, $id);
+            $message = ['success' => 'updated Successfully'];
+        } catch (\Exception $exception) {
+            $message = ['error' => 'Pls try again..!'];
+        }
+
+        return redirect(route('profile.edit', $id))->with($message);
     }
 }

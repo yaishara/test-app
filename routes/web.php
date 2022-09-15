@@ -34,5 +34,6 @@ Route::middleware(['web', 'auth'])->group(function () {
     Route::resource('role', RoleController::class);
     Route::resource('permissions', PermissionController::class);
     Route::resource('user/profile', UserProfileController::class);
+    Route::post('user/passwordChange/{id}',[UserProfileController::class,'change_password'])->name('users.passwordChange');
 
 });

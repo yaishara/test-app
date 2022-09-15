@@ -22,6 +22,31 @@ class UserProfileRepository implements UserProfileRepositoryInterface
      */
     public function updateUser($userDetails, $userId)
     {
+        DB::beginTransaction();
+        try {
+            $image = $userDetails->file('image');
+            $users = User::find($userId);
+            $users->name = $userDetails->name;
+            $users->save();
+
+            //$users->addMedia($image)->toMediaCollection();
+            if ($image) {
+                if ($userDetails->hasFile('image')) {
+                    $users->clearMediaCollection('images');
+                    $users->addMediaFromRequest('image')->toMediaCollection('images');
+                }
+            }
+            DB::commit();
+            return $users;
+        } catch (\Exception $exception) {
+            Log::error($exception->getMessage());
+            DB::rollback();
+            throw $exception;
+        }
+    }
+
+    public function updatePassword($userDetails, $userId)
+    {
         $hashedPassword = Auth::user()->password;
         $msgType = null;
         $msg = null;
@@ -35,12 +60,10 @@ class UserProfileRepository implements UserProfileRepositoryInterface
                     $users = User::find($userId);
                     $users->password = Hash::make($userDetails->new_password);
                     $users->save();
+
                     $msgType = "success";
                     $msg = "password updated successfully";
                 }
-            } else {
-                $msgType = "error";
-                $msg = "old password doesnt matched";
             }
             DB::commit();
             return $users;
