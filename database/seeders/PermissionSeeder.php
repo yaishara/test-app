@@ -32,5 +32,8 @@ class PermissionSeeder extends Seeder
         Permission::updateOrCreate(['permission_group_id' => $pg->id, 'name' => 'permission-create', 'guard_name' => 'web']);
         Permission::updateOrCreate(['permission_group_id' => $pg->id, 'name' => 'permission-edit', 'guard_name' => 'web']);
         Permission::updateOrCreate(['permission_group_id' => $pg->id, 'name' => 'permission-delete', 'guard_name' => 'web']);
+
+        $pg = PermissionGroup::updateOrCreate(['name' => 'UserProfile']);
+        Permission::updateOrCreate(['permission_group_id' => $pg->id, 'name' => 'userProfile-edit', 'guard_name' => 'web']);
     }
 }

@@ -3,8 +3,9 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Request;
 
-class UpdatePermissionRequest extends FormRequest
+class UserRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -21,10 +22,12 @@ class UpdatePermissionRequest extends FormRequest
      *
      * @return array
      */
-    public function rules()
+    public function rules(Request $request)
     {
         return [
-            //
+            'image_path' => 'required',
+            'email' => 'required|email|unique:users,email,'.$request->user,
+            'confirm_password' => 'required_with:password|same:password'
         ];
     }
 }

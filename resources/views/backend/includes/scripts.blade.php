@@ -8,6 +8,7 @@
 <script src="{{asset('js/jquery.validate.min.js')}}"></script>
 <script src="{{asset('js/toastr.min.js')}}"></script>
 <script src="{{asset('js/soft-ui-dashboard.min.js')}}"></script>
+<script type="text/javascript" src="{{asset('DataTables/js/jquery.dataTables.min.js')}}"></script>
 
 <script>
     var win = navigator.platform.indexOf('Win') > -1;

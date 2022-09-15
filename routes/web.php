@@ -4,6 +4,7 @@ use App\Http\Controllers\backend\DashboardController;
 use App\Http\Controllers\backend\PermissionController;
 use App\Http\Controllers\backend\RoleController;
 use App\Http\Controllers\backend\UserController;
+use App\Http\Controllers\backend\UserProfileController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -29,7 +30,9 @@ Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['au
 Route::middleware(['web', 'auth'])->group(function () {
 
     Route::resource('users', UserController::class);
+    Route::get('users/data/list',[UserController::class,'dataList'])->name('users.dataList');
     Route::resource('role', RoleController::class);
     Route::resource('permissions', PermissionController::class);
+    Route::resource('user/profile', UserProfileController::class);
 
 });

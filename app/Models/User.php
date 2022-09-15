@@ -38,4 +38,24 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function scopeTableData($query, $order_column, $order_by_str, $start, $length)
+    {
+        return $query
+            ->select('users.*')
+            ->orderBy($order_column, $order_by_str)
+            ->offset($start)
+            ->limit($length);
+    }
+
+    public function scopeFilterData($query, $promotion)
+    {
+        if (!empty($email)) {
+            $query->where('email', 'like', "%$email%");
+        }
+        if (!empty($name)) {
+            $query->where('users.name', 'like', "%$name%");
+        }
+        return $query;
+    }
 }
