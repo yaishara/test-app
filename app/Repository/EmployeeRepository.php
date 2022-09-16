@@ -12,7 +12,7 @@ class EmployeeRepository implements EmployeeRepositoryInterface
 {
     public function getAllEmployee()
     {
-        return Employee::with('company')->paginate(10);
+        return Employee::with('company')->get();
     }
 
     /**

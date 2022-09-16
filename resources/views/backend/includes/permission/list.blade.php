@@ -136,27 +136,27 @@
          {{in_array(request()->route()->uri,$uriList)?' show':null}}
          " id="company">
             <ul class="nav ms-4 ps-3">
-                {{--                @can('permission-list')--}}
-                <li class="nav-item
+                @can('company-list')
+                    <li class="nav-item
                     {{request()->route()->uri == "company" ?'active':null}}
                     ">
-                    <a class="nav-link " href="{{route('company.index')}}">
-                        <span class="sidenav-mini-icon"> C </span>
-                        <span class="sidenav-normal"> Company </span>
-                    </a>
-                </li>
-                {{--                @endcan--}}
+                        <a class="nav-link " href="{{route('company.index')}}">
+                            <span class="sidenav-mini-icon"> C </span>
+                            <span class="sidenav-normal"> Company </span>
+                        </a>
+                    </li>
+                @endcan
 
-                {{--                @can('role-list')--}}
-                <li class="nav-item
+                @can('employee-list')
+                    <li class="nav-item
                     {{request()->route()->uri == "employee" ?'active':null}}
                     ">
-                    <a class="nav-link " href="{{route('employee.index')}}">
-                        <span class="sidenav-mini-icon"> E </span>
-                        <span class="sidenav-normal"> Employee </span>
-                    </a>
-                </li>
-                {{--                @endcan--}}
+                        <a class="nav-link " href="{{route('employee.index')}}">
+                            <span class="sidenav-mini-icon"> E </span>
+                            <span class="sidenav-normal"> Employee </span>
+                        </a>
+                    </li>
+                @endcan
 
             </ul>
         </div>

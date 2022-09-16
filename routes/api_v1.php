@@ -20,10 +20,6 @@ use Illuminate\Validation\ValidationException;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
-
 Route::post('/sanctum/token', function (Request $request) {
     $request->validate([
         'email' => 'required|email',
@@ -43,5 +39,7 @@ Route::post('/sanctum/token', function (Request $request) {
 });
 
 
-Route::resource('company', CompanyAPIController::class)->middleware('auth:sanctum');
-Route::resource('employee', EmployeeAPIController::class)->middleware('auth:sanctum');
+Route::middleware('auth:sanctum')->group(function () {
+    Route::resource('companies', CompanyAPIController::class);
+    Route::resource('employees', EmployeeAPIController::class);
+});
