@@ -27,52 +27,10 @@
                     </div>
                 </div>
                 <div class="table-responsive">
-                    <table class="table align-items-center mb-0">
-                        <thead>
-                        <tr>
-                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Name</th>
-                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Permision Count</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        @foreach($roles as $role)
-                            <tr>
-                                <td>
-                                    <div class="d-flex px-2 py-1">
-                                        <div class="d-flex flex-column justify-content-center">
-                                            <h6 class="mb-0 text-xs">{{$role->name}}</h6>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="d-flex px-2 py-1">
-                                        <div class="d-flex flex-column justify-content-center">
-                                            <h6 class="mb-0 text-xs">{{$role->permissions->count()}}</h6>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td class="text-sm">
-                                    @can('role-edit')
-                                    <a href="{{route('role.edit',$role->id)}}"
-                                       class="mx-1"
-                                       data-bs-toggle="tooltip" data-bs-original-title="Edit role">
-                                        <i class="fas fa-edit text-info" aria-hidden="true"></i>
-                                    </a>
-                                    @endcan
-                                        @can('role-delete')
-                                    <a onclick="deleteItem({{$role->id}})" href="javascript:;"
-                                       data-bs-toggle="tooltip" data-bs-original-title="Delete role">
-                                        <i class="fas fa-trash text-danger" aria-hidden="true"></i>
-                                    </a>
-                                            @endcan
-                                </td>
-                            </tr>
-                        @endforeach
-                        </tbody>
-                    </table>
+                    {!! $dataTable->table() !!}
                 </div>
                 <div class="col-md-12">
-                    {{ $roles->links() }}
+
                 </div>
             </div>
         </div>
@@ -86,12 +44,15 @@
         @endpush
 
         @push('scripts')
-            <script src="{{asset('js/plugins/datatables.js')}}"></script>
+            <link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.0.3/css/buttons.dataTables.min.css">
+            <script src="https://cdn.datatables.net/buttons/1.0.3/js/dataTables.buttons.min.js"></script>
+            <script src="{{ asset('vendor/Datatables/buttons.server-side.js') }}"></script>
+            {!! $dataTable->scripts() !!}
+
             <script src="{{asset('js/custom/notifications.js')}}"></script>
             <script src="{{asset('js/custom/modal.js')}}"></script>
-            <script src="{{asset('js/custom/dataTable.js')}}"></script>
             <script src="{{asset('js/custom/FormOptions.js')}}"></script>
-            <script src="{{asset('js/dropzone.min.js')}}"></script>
+
             <script>
                 function deleteItem(id) {
                     const a = Swal.mixin({

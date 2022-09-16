@@ -1,9 +1,12 @@
 <?php
 
+use App\Http\Controllers\backend\CompanyController;
 use App\Http\Controllers\backend\DashboardController;
+use App\Http\Controllers\backend\EmployeeController;
 use App\Http\Controllers\backend\PermissionController;
 use App\Http\Controllers\backend\RoleController;
 use App\Http\Controllers\backend\UserController;
+use App\Http\Controllers\backend\UserProfileController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -18,7 +21,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('auth.login');
 });
 
 Auth::routes();
@@ -31,5 +34,9 @@ Route::middleware(['web', 'auth'])->group(function () {
     Route::resource('users', UserController::class);
     Route::resource('role', RoleController::class);
     Route::resource('permissions', PermissionController::class);
+    Route::resource('company', CompanyController::class);
+    Route::resource('employee', EmployeeController::class);
+    Route::resource('user/profile', UserProfileController::class);
+    Route::post('user/passwordChange/{id}', [UserProfileController::class, 'change_password'])->name('users.passwordChange');
 
 });

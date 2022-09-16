@@ -18,7 +18,7 @@
                 </div>
                 <div class="card-body">
 
-                    {!! Form::model($role,['url'=>route('role.update',$role->id),'files'=>true,'id'=>'updateproduct','method'=>'PUT']) !!}
+                    {!! Form::model($role,['url'=>route('role.update',$role->id),'files'=>true,'id'=>'updaterole','method'=>'PUT']) !!}
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
@@ -83,7 +83,7 @@
             jQuery.validator.addMethod("lettersonly", function (value, element) {
                 return this.optional(element) || /^[a-z\s]+$/i.test(value);
             }, "Only alphabetical characters");
-            $('#updateproduct').validate({
+            $('#updaterole').validate({
                 rules: {
                     name: {
                         required: true,

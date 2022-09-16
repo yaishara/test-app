@@ -16,7 +16,7 @@
                             <div class="card-body ">
                                 <div class="card-header pb-0 text-start">
                                     <h4 class="font-weight-bolder">Sign In</h4>
-                                    <p class="mb-0">Enter your email and password to sign in</p>
+                                    <a class="mb-0">Your are not register pls <a href="{{route('register')}}"><strong> sign up </strong> </a></p>
                                 </div>
                                 <div class="card-body">
                                     @if ($errors->any())

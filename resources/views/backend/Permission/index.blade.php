@@ -28,63 +28,8 @@
                     </div>
                 </div>
                 <div class="table-responsive">
-                    @if ($errors->any())
-                        <div class="alert alert-danger">
-                            <ul>
-                                @foreach ($errors->all() as $error)
-                                    <li>{{ $error }}</li>
-                                @endforeach
-                            </ul>
-                        </div>
-                    @endif
 
-                    <table class="table align-items-center mb-0">
-                        <thead>
-                        <tr>
-                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Name</th>
-                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
-                                Guard Name
-                            </th>
-                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
-                                Group Name
-                            </th>
-                            <th class="text-secondary opacity-7"></th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        @foreach($permissions as $permissions)
-                            <tr>
-                                <td>
-                                    <p class="text-xs font-weight-bold mb-0"> {{$permissions->name}}</p>
-                                </td>
-                                <td>
-                                    <p class="text-xs font-weight-bold mb-0"> {{$permissions->guard_name}}</p>
-                                </td>
-                                <td>
-                                    <p class="text-xs font-weight-bold mb-0"> {{optional($permissions->group)->name}}</p>
-                                </td>
-                                <td class="text-sm">
-                                    @can('permission-edit')
-                                        <a href="javascript:;" onclick="edit(this)" data-id="{{$permissions->id}}"
-                                           data-name="{{$permissions->name}}"
-                                           data-guard_name="{{$permissions->guard_name}}"
-                                           data-permission_group="{{$permissions->permission_group_id}}"
-                                           class="mx-3"
-                                           data-bs-toggle="tooltip" data-bs-original-title="Edit product">
-                                            <i class="fas fa-user-edit text-secondary" aria-hidden="true"></i>
-                                        </a>
-                                    @endcan
-                                    @can('permission-delete')
-                                        <a onclick="deleteItem({{$permissions->id}})" href="javascript:;"
-                                           data-bs-toggle="tooltip" data-bs-original-title="Delete product">
-                                            <i class="fas fa-trash text-secondary" aria-hidden="true"></i>
-                                        </a>
-                                    @endcan
-                                </td>
-                            </tr>
-                        @endforeach
-                        </tbody>
-                    </table>
+                    {!! $dataTable->table() !!}
                 </div>
                 <div class="col-md-12">
                     {{--                    {{ $permissions->links() }}--}}
@@ -178,12 +123,15 @@
         @endpush
 
         @push('scripts')
-            <script src="{{asset('js/plugins/datatables.js')}}"></script>
+            <link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.0.3/css/buttons.dataTables.min.css">
+            <script src="https://cdn.datatables.net/buttons/1.0.3/js/dataTables.buttons.min.js"></script>
+            <script src="{{ asset('vendor/Datatables/buttons.server-side.js') }}"></script>
+            {!! $dataTable->scripts() !!}
+
             <script src="{{asset('js/custom/notifications.js')}}"></script>
             <script src="{{asset('js/custom/modal.js')}}"></script>
-            <script src="{{asset('js/custom/dataTable.js')}}"></script>
             <script src="{{asset('js/custom/FormOptions.js')}}"></script>
-            <script src="{{asset('js/dropzone.min.js')}}"></script>
+
             <script>
 
                 function edit(item) {

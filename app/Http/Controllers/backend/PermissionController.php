@@ -4,29 +4,48 @@ namespace App\Http\Controllers\backend;
 
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\StorePermissionRequest;
-use App\Http\Requests\UpdatePermissionRequest;
+use App\Http\Controllers\DataTables\PermissionDataTable;
+use App\Http\Requests\PermissionRequest;
+use App\Interfaces\PermissionRepositoryInterface;
 use App\Models\PermissionGroup;
 use App\Models\Permission;
+use App\Repository\PermissionRepository;
+use Exception;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Response;
+use Illuminate\Routing\Redirector;
 
 class PermissionController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+    private PermissionRepositoryInterface $permissionRepository;
+
+    public function __construct(PermissionRepositoryInterface $permissionRepository)
     {
-        $permissionGroup = PermissionGroup::pluck('name','id');
-        $permissions = Permission::with('group')->paginate(10);
-        return view('backend.permission.index', compact('permissions','permissionGroup'));
+        $this->permissionRepository = $permissionRepository;
+
+        $this->middleware('permission:permission-list', ['only' => ['index']]);
+        $this->middleware('permission:permission-create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:permission-edit', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:permission-delete', ['only' => ['destroy']]);
+    }
+
+    /**
+     * @return Application|Factory|View
+     */
+    public function index(PermissionDataTable $dataTable)
+    {
+        $permissionGroup = PermissionGroup::pluck('name', 'id');
+        $permissions = $this->permissionRepository->getAllPermission();
+        return $dataTable->render('backend.permission.index', compact('permissions', 'permissionGroup'));
     }
 
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function create()
     {
@@ -36,29 +55,26 @@ class PermissionController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\StorePermissionRequest $request
-     * @return \Illuminate\Http\Response
+     * @param PermissionRequest $request
+     * @return Application|RedirectResponse|Redirector
      */
-    public function store(StorePermissionRequest $request)
+    public function store(PermissionRequest $request, PermissionRepository $permissionRepository)
     {
-        $name = $request->name;
-        $guard_name = $request->guard_name;
-        $group = $request->permission_group;
+        try {
+            $this->permissionRepository->createPermission($request);
+            $message = ['success' => 'Permission added Successfully'];
+        } catch (Exception $exception) {
+            $message = ['error' => 'Pls try again..!'];
+        }
+        return redirect(route('permissions.index'))->with($message);
 
-        $permission = new Permission();
-        $permission->name = $name;
-        $permission->guard_name = $guard_name;
-        $permission->permission_group_id = $group;
-
-        $permission->save();
-        return redirect(route('permissions.index'))->with('success', 'Permission added Successfully');
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Permission $permission
-     * @return \Illuminate\Http\Response
+     * @param Permission $permission
+     * @return Response
      */
     public function show(Permission $permission)
     {
@@ -68,8 +84,8 @@ class PermissionController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Permission $permission
-     * @return \Illuminate\Http\Response
+     * @param Permission $permission
+     * @return Response
      */
     public function edit(Permission $permission)
     {
@@ -79,34 +95,31 @@ class PermissionController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\UpdatePermissionRequest $request
-     * @param  \App\Models\permission                     $permission
-     * @return \Illuminate\Http\Response
+     * @param UpdatePermissionRequest $request
+     * @param Permission $permission
+     * @return Application|RedirectResponse|Redirector
      */
-    public function update(UpdatePermissionRequest $request, permission $permission)
+    public function update(PermissionRequest $request, permission $permission, PermissionRepository $permissionRepository)
     {
-        $name = $request->name;
-        $guard_name = $request->guard_name;
-        $group = $request->permission_group;
-
-        $permission->name = $name;
-        $permission->guard_name = $guard_name;
-        $permission->permission_group_id = $group;
-
-        $permission->save();
-        return redirect(route('permissions.index'))->with('info', 'Permissions Update Successfully');
+        try {
+            $this->permissionRepository->updatePermission($request, $permission);
+            $message = ['success' => 'Permission Update Successfully'];
+        } catch (Exception $exception) {
+            $message = ['error' => 'Pls try again..!'];
+        }
+        return redirect(route('permissions.index'))->with($message);
 
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Permission $permission
-     * @return \Illuminate\Http\Response
+     * @param Permission $permission
+     * @return string
      */
     public function destroy(permission $permission)
     {
-        $permission->delete();
+        $this->permissionRepository->deletePermission($permission);
         return 'true';
     }
 }
