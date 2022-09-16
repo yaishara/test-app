@@ -28,7 +28,6 @@ class EmployeeRequest extends FormRequest
             'last_name' => 'required',
             'email' => 'required',
             'company_id' => 'required',
-            'image_path' => 'required',
             'phone' => 'numeric|digits:10',
         ];
     }

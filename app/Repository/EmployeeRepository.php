@@ -22,7 +22,7 @@ class EmployeeRepository implements EmployeeRepositoryInterface
     {
         DB::beginTransaction();
         try {
-            $image = $employeeData->file('image_path');
+
             $employee = new Employee();
             $employee->first_name = $employeeData->first_name;
             $employee->last_name = $employeeData->last_name;
@@ -31,11 +31,10 @@ class EmployeeRepository implements EmployeeRepositoryInterface
             $employee->phone = $employeeData->phone;
             $employee->save();
 
-//            $images =Image::load($employeeData->file('image_path')->getClientOriginalExtension())
-//                ->width(100)
-//                ->height(100);
-
-            $employee->addMedia($image)->toMediaCollection();
+            $image = $employeeData->file('image_path');
+            if ($image) {
+                $employee->addMedia($image)->toMediaCollection();
+            }
 
             DB::commit();
             return $employee;
@@ -47,12 +46,12 @@ class EmployeeRepository implements EmployeeRepositoryInterface
 
     }
 
-    public function updateEmployee($employeeData, $permission)
+    public function updateEmployee($employeeData, $employee)
     {
         DB::beginTransaction();
         try {
             $image = $employeeData->file('image_path');
-            $employee = new Employee();
+
             $employee->first_name = $employeeData->first_name;
             $employee->last_name = $employeeData->last_name;
             $employee->email = $employeeData->email;
@@ -67,7 +66,7 @@ class EmployeeRepository implements EmployeeRepositoryInterface
                 }
             }
             DB::commit();
-            return $permission;
+            return $employee;
         } catch (\Exception $exception) {
             Log::error($exception->getMessage());
             DB::rollback();

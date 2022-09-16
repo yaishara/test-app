@@ -21,8 +21,7 @@ class CompanyRepository implements CompanyRepositoryInterface
     {
         DB::beginTransaction();
         try {
-            $logoImage = $companyData->file('logo_image_path');
-            $coverImage = $companyData->file('cover_image_path');
+
             $company = new Company();
             $company->name = $companyData->name;
             $company->email = $companyData->email;
@@ -30,8 +29,18 @@ class CompanyRepository implements CompanyRepositoryInterface
             $company->website = $companyData->website;
             $company->save();
 
-            $company->addMedia($logoImage)->toMediaCollection();
-            $company->addMedia($coverImage)->toMediaCollection();
+            $logoImage = $companyData->file('logo_image_path');
+            $coverImage = $companyData->file('cover_image_path');
+
+            if ($logoImage){
+                $company->addMedia($logoImage)->toMediaCollection();
+            }
+
+            if ($coverImage){
+                $company->addMedia($coverImage)->toMediaCollection();
+            }
+
+
             DB::commit();
             return $company;
         } catch (\Exception $exception) {

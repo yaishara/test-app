@@ -21,7 +21,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('auth.login');
 });
 
 Auth::routes();
@@ -37,6 +37,6 @@ Route::middleware(['web', 'auth'])->group(function () {
     Route::resource('company', CompanyController::class);
     Route::resource('employee', EmployeeController::class);
     Route::resource('user/profile', UserProfileController::class);
-    Route::post('user/passwordChange/{id}',[UserProfileController::class,'change_password'])->name('users.passwordChange');
+    Route::post('user/passwordChange/{id}', [UserProfileController::class, 'change_password'])->name('users.passwordChange');
 
 });
