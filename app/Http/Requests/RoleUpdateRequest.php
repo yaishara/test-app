@@ -5,7 +5,7 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Request;
 
-class UserRequest extends FormRequest
+class RoleUpdateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,8 +25,8 @@ class UserRequest extends FormRequest
     public function rules(Request $request)
     {
         return [
-            'email' => 'required|email|unique:users,email,'.$request->user,
-            'confirm_password' => 'required_with:password|same:password'
+            'permission' => 'required',
+            'name' => 'required|unique:roles,name,'.$request->role->id,
         ];
     }
 }

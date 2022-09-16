@@ -3,9 +3,8 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Http\Request;
 
-class UserRequest extends FormRequest
+class EmployeeRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,11 +21,16 @@ class UserRequest extends FormRequest
      *
      * @return array
      */
-    public function rules(Request $request)
+    public function rules()
     {
         return [
-            'email' => 'required|email|unique:users,email,'.$request->user,
-            'confirm_password' => 'required_with:password|same:password'
+            'first_name' => 'required',
+            'last_name' => 'required',
+            'email' => 'required',
+            'company_id' => 'required',
+            'image_path' => 'required',
+            'phone' => 'numeric|digits:10',
         ];
     }
 }
+

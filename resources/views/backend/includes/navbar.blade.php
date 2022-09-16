@@ -38,7 +38,7 @@
                     <ul class="dropdown-menu dropdown-menu-end px-2 py-3 me-sm-n4" aria-labelledby="dropdownMenuButton">
 
                         <li>
-                            <a class="dropdown-item border-radius-md" href="{{ route('logout') }}"  onclick="event.preventDefault();
+                            <a class="dropdown-item border-radius-md"  href="{{ route('logout') }}"  onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
                                 <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                                     @csrf
@@ -76,95 +76,12 @@
                         </li>
                     </ul>
 
-                <li class="nav-item d-flex align-items-center">
-                    <a href="" class="nav-link text-body font-weight-bold px-0" data-bs-toggle="modal"
-                       data-bs-target="#createModelchangepassword" data-id="{{Auth::user()->id}}">
-                        &nbsp;
-                        <i class="fa fa-gear" aria-hidden="true"></i>
-                    </a>
-                </li>
                 </li>
             </ul>
         </div>
     </div>
 </nav>
-<div class="modal fade" id="createModelchangepassword" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog mt-lg-10">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="ModalLabel">Change Password</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <form method="post" id="changepassword" action="{{url('change-password/'.Auth::user()->id)}}">
-                @csrf
-                <div class="modal-body">
-                    <div class="col-md-12">
-                        <div class="form-group">
-                            <input name="oldpassword" type="password" placeholder="Current Password" id="full_name"
-                                   required class="form-control"/>
-                        </div>
-                    </div>
-                    <div class="col-md-12">
-                        <div class="form-group">
-                            <input autocomplete="off" name="newpassword" type="password" class="form-control"
-                                   id="description"
-                                   placeholder="New Password">
-                        </div>
-                    </div>
-                    <div class="col-md-12">
-                        <div class="form-group">
-                            <input autocomplete="off" name="password_confirmation" type="password" class="form-control"
-                                   id="description"
-                                   placeholder="Conform Password">
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn bg-gradient-secondary btn-sm" data-bs-dismiss="modal">Close
-                    </button>
-                    <button type="submit" class="btn bg-gradient-primary btn-sm">Update</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
+
 @push('scripts')
-    <script src="{{asset('js/plugins/datatables.js')}}"></script>
-    <script src="{{asset('js/custom/notifications.js')}}"></script>
-    <script src="{{asset('js/custom/modal.js')}}"></script>
-    <script src="{{asset('js/custom/dataTable.js')}}"></script>
-    <script src="{{asset('js/custom/FormOptions.js')}}"></script>
-    <script src="{{asset('js/dropzone.min.js')}}"></script>
-<script>
-    $(document).ready(function () {
-        $('#changepassword').validate({
-            rules: {
-                oldpassword: {
-                    required: true,
-                    minlength: 3
-                },
-                newpassword: {
-                    required: true,
-                    minlength: 4
-                },
-                password_confirmation:{
-                    required: true,
-                    minlength: 4,
-                    equalTo : "#newpassword"
-                }
-            },
-            errorElement: 'span',
-            errorPlacement: function (error, element) {
-                error.addClass('invalid-feedback');
-                element.closest('.form-group').append(error);
-            },
-            highlight: function (element, errorClass, validClass) {
-                $(element).addClass('is-invalid');
-            },
-            unhighlight: function (element, errorClass, validClass) {
-                $(element).removeClass('is-invalid');
-            }
-        });
-    });
-</script>
+
 @endpush

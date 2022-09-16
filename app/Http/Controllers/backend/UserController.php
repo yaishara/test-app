@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\backend;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\DataTables\UserDataTables;
 use App\Http\Requests\UserRequest;
 use App\Interfaces\RoleRepositoryInterface;
 use App\Models\Role;
@@ -39,44 +40,11 @@ class UserController extends Controller
      *
      * @return Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
-    public function index()
+    public function index(UserDataTables $dataTable)
     {
         $roles = $this->roleRepository->getAllRole()->pluck('name', 'name');
-        $users=[];
-        return view('backend.user.index', compact('roles', 'users'));
-    }
-    public function dataList(Request $request){
-        $order_by = $request->order;
-        $start = $request->start;
-        $length = $request->length;
-        $order_by_str = $order_by[0]['dir'];
 
-        $columns = ['name'];
-        $order_column = $columns[$order_by[0]['column']];
-        $dataset = $this->userRepository->getAllUsers();
-        if (!empty($request->filter)) {
-            $name = $request->name;
-            $email = $request->email;
-
-            $dataset = $dataset->filterData($email,$name);
-            $filter_count = $dataset->count();
-        }
-        $dataset = $dataset->tableData($order_column, $order_by_str, $start, $length);
-
-        $channels_count = $dataset->count();
-        $dataset = $dataset->get();
-        if ($channels_count == 0) {
-            $dataset = [];
-        }
-        $json_data = [
-            "draw" => intval($_REQUEST['draw']),
-            "recordsTotal" => intval($channels_count),
-            "recordsFiltered" => intval($channels_count),
-            "data" => $dataset
-        ];
-
-        return json_encode($json_data);
-
+        return $dataTable->render('backend.user.index',compact('roles'));
     }
     /**
      * Show the form for creating a new resource.

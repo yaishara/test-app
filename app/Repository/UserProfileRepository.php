@@ -29,7 +29,6 @@ class UserProfileRepository implements UserProfileRepositoryInterface
             $users->name = $userDetails->name;
             $users->save();
 
-            //$users->addMedia($image)->toMediaCollection();
             if ($image) {
                 if ($userDetails->hasFile('image')) {
                     $users->clearMediaCollection('images');

@@ -1,6 +1,6 @@
 @extends('backend.layouts.master')
 
-@section('title','Permissions')
+@section('title','Employee')
 
 @section('content')
     <div class="row mt-4">
@@ -9,18 +9,18 @@
                 <div class="card-header">
                     <div class="d-lg-flex">
                         <div>
-                            <h5 class="mb-0">All Permissions </h5>
+                            <h5 class="mb-0">All Employee </h5>
                             <p class="text-sm mb-0">
-                                {{config('app.name')}} Permissions
+                                {{config('app.name')}} Employee
                             </p>
                         </div>
                         <div class="ms-auto my-auto mt-lg-0 mt-4">
-                            @can('permission-create')
+                            @can('employee-create')
                                 <div class="ms-auto my-auto">
                                     <button type="button" class="btn bg-gradient-primary btn-sm mb-0"
                                             data-bs-toggle="modal"
                                             data-bs-target="#createModal">
-                                        + New Permission
+                                        + New Employee
                                     </button>
                                 </div>
                             @endcan
@@ -28,11 +28,10 @@
                     </div>
                 </div>
                 <div class="table-responsive">
-
                     {!! $dataTable->table() !!}
                 </div>
                 <div class="col-md-12">
-                    {{--                    {{ $permissions->links() }}--}}
+
                 </div>
             </div>
         </div>
@@ -41,28 +40,48 @@
             <div class="modal-dialog mt-lg-10">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="ModalLabel">Create New Permission </h5>
+                        <h5 class="modal-title" id="ModalLabel">Create New Employee </h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    {!! Form::open(['route'=>'permissions.store','files'=>true]) !!}
+                    {!! Form::open(['route'=>'employee.store','files'=>true]) !!}
                     <div class="modal-body">
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    {!! Form::select('permission_group',$permissionGroup,null,['class'=>'form-control','placeholder'=>'Select Group','required','id'=>'permission_group']) !!}
+                                    {!! Form::select('company_id',$company,null,['class'=>'form-control','placeholder'=>'Select Comapny','required','id'=>'company_id']) !!}
                                 </div>
                             </div>
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <input name="name" type="text" placeholder="Name" id="name"
+                                    <input name="first_name" type="text" placeholder="First Name" id="first_name"
                                            required class="form-control"/>
                                 </div>
                             </div>
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <input name="guard_name" type="text" placeholder="Guard Name" id="Guard Name"
+                                    <input name="last_name" type="text" placeholder="Last Name" id="last_name"
                                            required class="form-control"/>
                                 </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <input name="email" type="text" placeholder="Email" id="email"
+                                           required class="form-control"/>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <input name="phone" type="text" placeholder="Phone Number" id="phone"
+                                           required class="form-control"/>
+                                </div>
+                            </div>
+                            <div class="col-md-12 dropzone2" id="dropzone2">
+                                <p>Select Image</p>
+                                <img src="" class="image_path">
+                                <div class="fallback">
+                                    <input name="image_path" type="file" id="image_path" class=""/>
+                                </div>
+
                             </div>
                         </div>
                     </div>
@@ -81,30 +100,49 @@
             <div class="modal-dialog mt-lg-10">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="ModalLabel">Update Permission</h5>
+                        <h5 class="modal-title" id="ModalLabel">Update Employee</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    {!! Form::open(['route'=>'permissions.store','method'=>'put','id'=>'updateForm','files'=>true]) !!}
+                    {!! Form::open(['route'=>'employee.store','method'=>'put','id'=>'updateForm','files'=>true]) !!}
                     <div class="modal-body">
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    {!! Form::select('permission_group',$permissionGroup,null,['class'=>'form-control permission_group','placeholder'=>'Select Group','required','id'=>'permission_group']) !!}
+                                    {!! Form::select('company_id',$company,null,['class'=>'form-control company_id','placeholder'=>'Select Company','required','id'=>'company_id']) !!}
                                 </div>
                             </div>
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <input name="name" type="text" placeholder="Name"
-                                           required class="form-control name"/>
+                                    <input name="first_name" type="text" placeholder="First Name"  id="first_name"
+                                           required class="form-control first_name"/>
                                 </div>
                             </div>
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <input name="guard_name" type="text" placeholder="Guard Name"
-                                           required class="form-control name guard_name"/>
+                                    <input name="last_name" type="text" placeholder="Last Name" id="last_name"
+                                           required class="form-control last_name"/>
                                 </div>
                             </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <input name="email" type="text" placeholder="Email" id="email"
+                                           required class="form-control email"/>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <input name="phone" type="text" placeholder="Phone Number" id="phone"
+                                           required class="form-control phone"/>
+                                </div>
+                            </div>
+                            <div class="col-md-12 dropzone2" id="dropzone2">
+                                <p>Select Image</p>
+                                <img src="" class="image_path">
+                                <div class="fallback">
+                                    <input name="image_path" type="file" id="image_path" class="image_path"/>
+                                </div>
 
+                            </div>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -136,14 +174,18 @@
 
                 function edit(item) {
                     let id = item.dataset.id;
-                    let name = item.dataset.name;
-                    let guard_name = item.dataset.guard_name;
-                    let permission_group = item.dataset.permission_group;
+                    let first_name = item.dataset.first_name;
+                    let last_name = item.dataset.last_name;
+                    let email = item.dataset.email;
+                    let phone = item.dataset.phone;
+                    let company_id = item.dataset.company_id;
 
-                    $("#updateForm").find('.name').val(name);
-                    $("#updateForm").find('.guard_name').val(guard_name);
-                    $("#updateForm").find('.permission_group').val(permission_group);
-                    $("#updateForm").attr('action', '/permissions/' + id);
+                    $("#updateForm").find('.first_name').val(first_name);
+                    $("#updateForm").find('.last_name').val(last_name);
+                    $("#updateForm").find('.email').val(email);
+                    $("#updateForm").find('.phone').val(phone);
+                    $("#updateForm").find('.company_id').val(company_id);
+                    $("#updateForm").attr('action', '/employee/' + id);
                     ModalOptions.toggleModal('editModal');
                 }
 
@@ -166,7 +208,7 @@
                     }).then(e => {
                         if (e.value) {
                             $.ajax({
-                                url: '/permissions/' + id,
+                                url: '/employee/' + id,
                                 type: 'DELETE',
                                 data: {id: id}, //<-----this should be an object.
                                 contentType: 'application/json',  // <---add this

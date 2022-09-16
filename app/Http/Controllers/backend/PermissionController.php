@@ -4,6 +4,7 @@ namespace App\Http\Controllers\backend;
 
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\DataTables\PermissionDataTable;
 use App\Http\Requests\PermissionRequest;
 use App\Interfaces\PermissionRepositoryInterface;
 use App\Models\PermissionGroup;
@@ -34,11 +35,11 @@ class PermissionController extends Controller
     /**
      * @return Application|Factory|View
      */
-    public function index()
+    public function index(PermissionDataTable $dataTable)
     {
         $permissionGroup = PermissionGroup::pluck('name', 'id');
         $permissions = $this->permissionRepository->getAllPermission();
-        return view('backend.permission.index', compact('permissions', 'permissionGroup'));
+        return $dataTable->render('backend.permission.index', compact('permissions', 'permissionGroup'));
     }
 
     /**

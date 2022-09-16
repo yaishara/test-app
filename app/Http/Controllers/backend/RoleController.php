@@ -4,7 +4,9 @@ namespace App\Http\Controllers\backend;
 
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\DataTables\RoleDataTable;
 use App\Http\Requests\RoleRequest;
+use App\Http\Requests\RoleUpdateRequest;
 use App\Interfaces\RoleRepositoryInterface;
 use App\Models\PermissionGroup;
 use App\Repository\RoleRepository;
@@ -30,10 +32,10 @@ class RoleController extends Controller
      *
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
-    public function index()
+    public function index(RoleDataTable $dataTable)
     {
         $roles = $this->roleRepository->getAllRole();
-        return view('backend.role.index', compact('roles'));
+        return $dataTable->render('backend.role.index', compact('roles'));
     }
 
     /**
@@ -55,7 +57,7 @@ class RoleController extends Controller
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
     public function store(RoleRequest $request, RoleRepository $roleRepository)
-    {dd("ss");
+    {
         try {
             $this->roleRepository->createRole($request);
             $message = ['success' => 'Role added Successfully'];
@@ -96,7 +98,7 @@ class RoleController extends Controller
      * @param \App\Models\Role $role
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
-    public function update(RoleRequest $request, Role $role)
+    public function update(RoleUpdateRequest $request, Role $role)
     {
         try {
             $this->roleRepository->updateRole($request, $role);

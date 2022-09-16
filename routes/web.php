@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Controllers\backend\CompanyController;
 use App\Http\Controllers\backend\DashboardController;
+use App\Http\Controllers\backend\EmployeeController;
 use App\Http\Controllers\backend\PermissionController;
 use App\Http\Controllers\backend\RoleController;
 use App\Http\Controllers\backend\UserController;
@@ -30,9 +32,10 @@ Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['au
 Route::middleware(['web', 'auth'])->group(function () {
 
     Route::resource('users', UserController::class);
-    Route::get('users/data/list',[UserController::class,'dataList'])->name('users.dataList');
     Route::resource('role', RoleController::class);
     Route::resource('permissions', PermissionController::class);
+    Route::resource('company', CompanyController::class);
+    Route::resource('employee', EmployeeController::class);
     Route::resource('user/profile', UserProfileController::class);
     Route::post('user/passwordChange/{id}',[UserProfileController::class,'change_password'])->name('users.passwordChange');
 
